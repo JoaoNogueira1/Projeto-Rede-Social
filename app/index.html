@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><?= $titulo ?></title>
+    <style>
+        body {
+            font-family: Arial;
+            margin: 40px;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th,
+        td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        .btn {
+            padding: 5px 10px;
+            text-decoration: none;
+            border-radius: 3px;
+        }
+
+        .btn-novo {
+            background: #4CAF50;
+            color: white;
+        }
+
+        .btn-editar {
+            background: #ffc107;
+            color: black;
+        }
+
+        .btn-excluir {
+            background: #dc3545;
+            color: white;
+        }
+
+        .sucesso {
+            background: #d4edda;
+            color: #155724;
+            padding: 10px;
+            margin-bottom: 20px;
+        }
+
+        .erro {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 10px;
+            margin-bottom: 20px;
+        }
+
+        /* Faz o título e o botão ficarem na mesma linha, um em cada ponta */
+        .header-acoes {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        /* Garante que o botão se comporte como um bloco e tenha espaçamento interno */
+        .btn {
+            display: inline-block;
+            /* Importante para aceitar padding e margin */
+            padding: 10px 15px;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+
+        /* Ajuste específico para o botão novo se não quiser usar Flexbox */
+        .btn-novo {
+            background-color: #4CAF50;
+            color: white;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header-acoes">
+        <h1><?= $titulo ?></h1>
+        <a href="/categorias/novo" class="btn btn-novo">+ Nova Categoria</a>
+    </div>
+
+    <!-- Mensagens flash -->
+    <?php if (session()->getFlashdata('sucesso')): ?>
+        <div class="sucesso"><?= session()->getFlashdata('sucesso') ?></div>
+    <?php endif; ?>
+
+    <?php if (session()->getFlashdata('erro')): ?>
+        <div class="erro"><?= session()->getFlashdata('erro') ?></div>
+    <?php endif; ?>
+
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nome</th>
+                <th>Descrição</th>
+                <th>Criado em</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach ($categorias as $categoria): ?>
+                <tr>
+                    <td><?= $categoria->id ?></td>
+                    <td><?= $categoria->nome ?></td>
+                    <td><?= $categoria->getDescricaoResumida(30) ?></td>
+                    <td><?= $categoria->getCriadoEmBrasil() ?></td>
+                    <td>
+                        <a href="/categorias/editar/<?= $categoria->id ?>" class="btn btn-editar">Editar</a>
+                        <a href="/categorias/excluir/<?= $categoria->id ?>"
+                            class="btn btn-excluir"
+                            onclick="return confirm('Tem certeza?')">Excluir</a>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
+        </tbody>
+    </table>
+</body>
+
+</html>
